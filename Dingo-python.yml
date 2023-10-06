@@ -33,8 +33,8 @@ steps:
       # Python >= 3.10
       manage_py = next(iglob(path.join('**', 'manage.py'), recursive=True), None)
       if not manage_py:
-          raise SystemExit('Could not find a Django project')
-      project_location = path.dirname(path.abspath(manage_py))
+  # raise SystemExit('Could not find a Django project')
+   # project_location = path.dirname(path.abspath(manage_py))
       print('Found Django project in', project_location)
       print('##vso[task.setvariable variable=projectRoot]{}'.format(project_location))
 
