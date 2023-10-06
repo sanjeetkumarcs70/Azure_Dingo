@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/python
 
 trigger:
-- main
+- master
 pool:
   vmImage: ubuntu-latest
 strategy:
@@ -30,7 +30,7 @@ steps:
       """Search all subdirectories for `manage.py`."""
       from glob import iglob
       from os import path
-    Python >= 3.10
+    Python >= 3.5
       manage_py = next(iglob(path.join('**', 'manage.py'), recursive=True), None)
       if not manage_py:
       raise SystemExit('Could not find a Django project')
@@ -48,6 +48,12 @@ steps:
     pushd '$(projectRoot)'
     python manage.py test --testrunner xmlrunner.extra.djangotestrunner.XMLTestRunner --no-input
   displayName: 'Run tests'
+
+  pushd ‘$(projectRoot)’
+ pip install pytest pytest-azurepipelines pytest-cov
+ pytest -v — cov — cov-report=xml
+ displayName: “Pytest Unit Test with Coverage”
+ continueOnError: False
 
 - task: PublishTestResults@2
   inputs:
